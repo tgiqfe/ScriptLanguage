@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace plugin.Lang
 {
     /// <summary>
     /// DefaultのLanguageの設定値を取得
     /// </summary>
-    class DefaultLanguageSetting
+    internal class DefaultLanguageSetting
     {
         public static List<Language> Create()
         {
@@ -42,6 +43,16 @@ namespace plugin.Lang
             });
             list.Add(new Language()
             {
+                Name = "Pwsh7",
+                Extensions = new string[] { ".ps1" },
+                Command = WhereCommand("pwsh") ?? @"C:\Program Files\PowerShell\7\pwsh.exe",
+                ArgsPrefix = "-ExecutionPolicy Unrestricted -File \"",
+                ArgsMidWithoutArgs = "\"",
+                ArgsMidWithArgs = "\" ",
+                ArgsSuffix = "",
+            });
+            list.Add(new Language()
+            {
                 Name = "WScript",
                 Extensions = new string[] { ".vbs", ".vbe", ".js", ".jse", ".wsf", ".wsh" },
                 Command = @"C:\Windows\System32\wscript.exe",
@@ -54,7 +65,8 @@ namespace plugin.Lang
             {
                 Name = "Go",
                 Extensions = new string[] { ".go" },
-                Command = @"C:\Program Files\Go\bin\go.exe",
+                //Command = @"C:\Program Files\Go\bin\go.exe",
+                Command = WhereCommand("go") ?? @"C:\Program Files\Go\bin\go.exe",
                 ArgsPrefix = "\"",
                 ArgsMidWithoutArgs = "\"",
                 ArgsMidWithArgs = "\" ",
@@ -64,13 +76,35 @@ namespace plugin.Lang
             {
                 Name = "Node.js",
                 Extensions = new string[] { ".js" },
-                Command = @"C:\Program Files\nodejs\node.exe",
+                //Command = @"C:\Program Files\nodejs\node.exe",
+                Command = WhereCommand("node") ?? @"C:\Program Files\nodejs\node.exe",
                 ArgsPrefix = "\"",
                 ArgsMidWithoutArgs = "\"",
                 ArgsMidWithArgs = "\" ",
                 ArgsSuffix = "",
             });
             return list;
+        }
+        
+        private static string WhereCommand(params string[] commands)
+        {
+            foreach(string command in commands)
+            {
+                using (var proc = new Process())
+                {
+                    proc.StartInfo.FileName = "where.exe";
+                    proc.StartInfo.Arguments = command;
+                    proc.StartInfo.CreateNoWindow = true;
+                    proc.StartInfo.UseShellExecute = false;
+                    proc.StartInfo.RedirectStandardOutput = true;
+                    proc.Start();
+                    string output_psCommandPath = proc.StandardOutput.ReadLine();     //最初の1行のみ取得
+                    proc.WaitForExit();
+
+                    return proc.ExitCode == 0 ? output_psCommandPath.Trim() : null;
+                }
+            }
+            return null;
         }
     }
 }
