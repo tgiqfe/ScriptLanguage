@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.IO;
+using System.Diagnostics;
 
 namespace plugin.Lang
 {
@@ -24,7 +25,7 @@ namespace plugin.Lang
                 }
             }
             catch { }
-            if(list == null)
+            if (list == null)
             {
                 list = DefaultLanguageSetting.Create();
             }
@@ -59,12 +60,31 @@ namespace plugin.Lang
 
         #endregion
 
-        public Language GetLanguage(string path)
+        public Language GetLanguage(string filePath)
         {
-            string extension = Path.GetExtension(path);
-            return this.FirstOrDefault(x =>
-                x.Extensions.Any(y =>
-                    y.Equals(extension, StringComparison.OrdinalIgnoreCase)));
+            if (File.Exists(filePath))
+            {
+                string extension = Path.GetExtension(filePath);
+                return this.FirstOrDefault(x =>
+                    x.Extensions.Any(y =>
+                        y.Equals(extension, StringComparison.OrdinalIgnoreCase)));
+            }
+            return null;
+        }
+
+        public Process GetProcess(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                string extension = Path.GetExtension(filePath);
+                Language lang = this.FirstOrDefault(x =>
+                    x.Extensions.Any(y =>
+                        y.Equals(extension, StringComparison.OrdinalIgnoreCase)));
+                return lang == null ?
+                    null :
+                    lang.GetProcess(filePath, "");
+            }
+            return null;
         }
     }
 }
