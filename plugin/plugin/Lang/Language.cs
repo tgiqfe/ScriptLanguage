@@ -11,6 +11,7 @@ namespace plugin.Lang
     public class Language
     {
         public string Name { get; set; }
+        public string Description { get; set; }
         public string[] Extensions { get; set; }
         public string Command { get; set; }
         public string Command_x86 { get; set; }

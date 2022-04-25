@@ -44,6 +44,7 @@ namespace plugin.Lang
             list.Add(new Language()
             {
                 Name = "Pwsh7",
+                Description = "PowerShell v7",
                 Extensions = new string[] { ".ps1" },
                 Command = WhereCommand("pwsh") ?? @"C:\Program Files\PowerShell\7\pwsh.exe",
                 ArgsPrefix = "-ExecutionPolicy Unrestricted -File \"",
