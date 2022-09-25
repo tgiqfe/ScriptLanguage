@@ -53,14 +53,20 @@ namespace plugin.Lang
 
         #endregion
 
-        public Language GetLanguage(string filePath)
+        public Language GetLanguage(string keyword)
         {
-            if (File.Exists(filePath))
+            if (File.Exists(keyword))
             {
-                string extension = Path.GetExtension(filePath);
+                string extension = Path.GetExtension(keyword);
                 return this.FirstOrDefault(x =>
                     x.Extensions.Any(y =>
                         y.Equals(extension, StringComparison.OrdinalIgnoreCase)));
+            }
+            else
+            {
+                return this.FirstOrDefault(x =>
+                    x.Name.Equals(keyword, StringComparison.OrdinalIgnoreCase) ||
+                    (x.Alias?.Any(y => y.Equals(keyword, StringComparison.OrdinalIgnoreCase)) ?? false));
             }
             return null;
         }

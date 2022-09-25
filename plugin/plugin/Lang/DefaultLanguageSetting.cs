@@ -24,6 +24,7 @@ namespace plugin.Lang
             list.Add(new Language()
             {
                 Name = "cmd",
+                Alias = new string[] { "dos", "bat" },
                 Extensions = new string[] { ".bat", ".cmd" },
                 Command = "cmd",
                 ArgsPrefix = "/c \"",
@@ -34,6 +35,7 @@ namespace plugin.Lang
             list.Add(new Language()
             {
                 Name = "PowerShell",
+                Alias = new string[] { "pshell", "pwsh" },
                 Extensions = new string[] { ".ps1" },
                 Command = @"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe",
                 ArgsPrefix = "-ExecutionPolicy Unrestricted -File \"",
@@ -44,6 +46,7 @@ namespace plugin.Lang
             list.Add(new Language()
             {
                 Name = "Pwsh7",
+                Alias = new string[] { "pshell", "pwsh" },
                 Description = "PowerShell v7",
                 Extensions = new string[] { ".ps1" },
                 Command = WhereCommand("pwsh") ?? @"C:\Program Files\PowerShell\7\pwsh.exe",
@@ -55,6 +58,7 @@ namespace plugin.Lang
             list.Add(new Language()
             {
                 Name = "WScript",
+                Alias = new string[] { "vbs", "vbscript", "js", "jscript" },
                 Extensions = new string[] { ".vbs", ".vbe", ".js", ".jse", ".wsf", ".wsh" },
                 Command = @"C:\Windows\System32\wscript.exe",
                 ArgsPrefix = "//nologo \"",
@@ -65,6 +69,7 @@ namespace plugin.Lang
             list.Add(new Language()
             {
                 Name = "Go",
+                Alias = new string[] { "golang" },
                 Extensions = new string[] { ".go" },
                 //Command = @"C:\Program Files\Go\bin\go.exe",
                 Command = WhereCommand("go") ?? @"C:\Program Files\Go\bin\go.exe",
@@ -76,6 +81,7 @@ namespace plugin.Lang
             list.Add(new Language()
             {
                 Name = "Node.js",
+                Alias = new string[] { "nodejs", "node" },
                 Extensions = new string[] { ".js" },
                 //Command = @"C:\Program Files\nodejs\node.exe",
                 Command = WhereCommand("node") ?? @"C:\Program Files\nodejs\node.exe",
@@ -86,10 +92,10 @@ namespace plugin.Lang
             });
             return list;
         }
-        
+
         private static string WhereCommand(params string[] commands)
         {
-            foreach(string command in commands)
+            foreach (string command in commands)
             {
                 using (var proc = new Process())
                 {
