@@ -14,6 +14,7 @@ namespace plugin.Lang
         public string[] Alias { get; set; }
         public string Description { get; set; }
         public string[] Extensions { get; set; }
+        public string Encoding { get; set; }
         public string Command { get; set; }
         public string Command_x86 { get; set; }
         public string ArgsPrefix { get; set; }

@@ -68,7 +68,6 @@ namespace plugin.Lang
                     x.Name.Equals(keyword, StringComparison.OrdinalIgnoreCase) ||
                     (x.Alias?.Any(y => y.Equals(keyword, StringComparison.OrdinalIgnoreCase)) ?? false));
             }
-            return null;
         }
 
         public System.Diagnostics.Process GetProcess(string filePath)
